@@ -23,7 +23,6 @@ public class Towers {
 				count++;
 				arr[count - 1] = val;
 			} else {
-				index = -1;
 				index = search(val, arr, pointer, count - 1);
 				arr[index] = val;
 
