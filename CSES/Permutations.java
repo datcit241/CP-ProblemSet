@@ -1,112 +1,125 @@
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.*;
 
 public class Permutations {
 
 	public static void main(String[] args) throws Exception {
-		FastIO scan = new FastIO(System.in);
-		PrintWriter out = new PrintWriter(System.out);
+		StringBuilder sb = new StringBuilder();
 
-		int n = scan.nextInt();
+		int n = ni();
 
 		if (n == 3 || n == 2) {
-			out.print("NO SOLUTION");
+			sb.append("NO SOLUTION");
 		} else {
 			for (int i = 2; i <= n; i += 2) {
-				out.print(i + " ");
+				sb.append(i).append(" ");
 			}
 			for (int i = 1; i <= n; i += 2) {
-				out.print(i + " ");
+				sb.append(i).append(" ");
 			}
+			
 		}
-		out.flush();
-		out.close();
+		System.out.print(sb);
 
 	}
 
-	public static class FastIO {
-		InputStream dis;
-		byte[] buffer = new byte[1 << 17];
-		int pointer = 0;
+	static InputStream is = System.in;
+	static byte[] inbuf = new byte[1 << 24];
+	static int lenbuf = 0, ptrbuf = 0;
 
-		public FastIO(String fileName) throws Exception {
-			dis = new FileInputStream(fileName);
-		}
-
-		public FastIO(InputStream is) {
-			dis = is;
-		}
-
-		int nextInt() throws Exception {
-			int ret = 0;
-			byte b;
-			do {
-				b = nextByte();
-			} while (b <= ' ');
-			boolean negative = false;
-			if (b == '-') {
-				negative = true;
-				b = nextByte();
+	static int readByte() {
+		if (lenbuf == -1)
+			throw new InputMismatchException();
+		if (ptrbuf >= lenbuf) {
+			ptrbuf = 0;
+			try {
+				lenbuf = is.read(inbuf);
+			} catch (IOException e) {
+				throw new InputMismatchException();
 			}
-			while (b >= '0' && b <= '9') {
-				ret = 10 * ret + b - '0';
-				b = nextByte();
-			}
-			return (negative) ? -ret : ret;
+			if (lenbuf <= 0)
+				return -1;
 		}
+		return inbuf[ptrbuf++];
+	}
 
-		long nextLong() throws Exception {
-			long ret = 0;
-			byte b;
-			do {
-				b = nextByte();
-			} while (b <= ' ');
-			boolean negative = false;
-			if (b == '-') {
-				negative = true;
-				b = nextByte();
-			}
-			while (b >= '0' && b <= '9') {
-				ret = 10 * ret + b - '0';
-				b = nextByte();
-			}
-			return (negative) ? -ret : ret;
+	static boolean isSpaceChar(int c) {
+		return !(c >= 33 && c <= 126);
+	}
+
+	static int skip() {
+		int b;
+		while ((b = readByte()) != -1 && isSpaceChar(b))
+			;
+		return b;
+	}
+
+	static double nd() {
+		return Double.parseDouble(ns());
+	}
+
+	static char nc() {
+		return (char) skip();
+	}
+
+	static String ns() {
+		int b = skip();
+		StringBuilder sb = new StringBuilder();
+		while (!(isSpaceChar(b))) {
+			sb.appendCodePoint(b);
+			b = readByte();
 		}
+		return sb.toString();
+	}
 
-		Integer[] readArray(int n) throws Exception {
-			Integer[] a = new Integer[n];
-			for (int i = 0; i < n; i++)
-				a[i] = nextInt();
-			return a;
+	static char[] ns(int n) {
+		char[] buf = new char[n];
+		int b = skip(), p = 0;
+		while (p < n && !(isSpaceChar(b))) {
+			buf[p++] = (char) b;
+			b = readByte();
 		}
+		return n == p ? buf : Arrays.copyOf(buf, p);
+	}
 
-		byte nextByte() throws Exception {
-			if (pointer == buffer.length) {
-				dis.read(buffer, 0, buffer.length);
-				pointer = 0;
+	static int ni() {
+		int num = 0, b;
+		boolean minus = false;
+		while ((b = readByte()) != -1 && !((b >= '0' && b <= '9') || b == '-'))
+			;
+		if (b == '-') {
+			minus = true;
+			b = readByte();
+		}
+		while (true) {
+			if (b >= '0' && b <= '9') {
+				num = num * 10 + (b - '0');
+			} else {
+				return minus ? -num : num;
 			}
-			return buffer[pointer++];
-		}
-
-		String next() throws Exception {
-			StringBuilder ret = new StringBuilder();
-			byte b;
-			do {
-				b = nextByte();
-			} while (b <= ' ');
-			while (b >= ' ') {
-				ret.appendCodePoint(b);
-				b = nextByte();
-			}
-			return ret.toString();
-		}
-
-		public void close() throws Exception {
-			if (dis == null)
-				return;
-			dis.close();
+			b = readByte();
 		}
 	}
+
+	static long nl() {
+		long num = 0;
+		int b;
+		boolean minus = false;
+		while ((b = readByte()) != -1 && !((b >= '0' && b <= '9') || b == '-'))
+			;
+		if (b == '-') {
+			minus = true;
+			b = readByte();
+		}
+		while (true) {
+			if (b >= '0' && b <= '9') {
+				num = num * 10 + (b - '0');
+			} else {
+				return minus ? -num : num;
+			}
+			b = readByte();
+		}
+	}
+
 
 }
