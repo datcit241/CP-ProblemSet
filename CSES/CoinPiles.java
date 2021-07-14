@@ -1,7 +1,5 @@
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.InputMismatchException;
+import java.io.*;
+import java.util.*;
 
 public class CoinPiles {
 
@@ -12,21 +10,15 @@ public class CoinPiles {
 		for (int i = 0; i < n; i++) {
 			int p1 = ni();
 			int p2 = ni();
-			int max = Integer.max(p1, p2);
-			int min = Integer.min(p1, p2);
 
-			if (p1 == 0 && p2 == 0) {
-				sb.append("YES\n");
-			} else if (p1 == 0 || p2 == 0) {
-				sb.append("NO\n");
-			} else if (max / 2 > min) {
-				sb.append("NO\n");
+			if ((p1 + p2) % 3 == 0) {
+				int div = (p1 + p2) / 3;
+				sb.append(p1 >= div && p2 >= div ? "YES\n" : " NO\n");
 			} else {
-				int p = p1 + p2;
-				sb.append((p % 3 == 0 ? "YES" : "NO") + "\n");
+				sb.append("NO\n");
 			}
 		}
-		System.out.println(sb);
+		System.out.print(sb);
 
 	}
 
