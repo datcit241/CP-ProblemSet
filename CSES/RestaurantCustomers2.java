@@ -1,29 +1,22 @@
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.InputMismatchException;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class RestaurantCustomers2 {
 
-	public static void main(String[] args) throws IOException {
-		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
+	public static void main(String[] args) {
+		StringBuilder sb = new StringBuilder();
 
 		int n = ni();
-		List<Integer> list = new ArrayList<>();
-		List<Integer> list2 = new ArrayList<>();
+		int[] arr1 = new int[n];
+		int[] arr2 = new int[n];
 
 		for (int i = 0; i < n; i++) {
-			int val = ni();
-			list.add(val);
-			list2.add(ni());
+			arr1[i] = ni();
+			arr2[i] = ni();
 		}
-		Collections.sort(list);
-		Collections.sort(list2);
+		
+		Arrays.sort(arr1);
+		Arrays.sort(arr2);
 
 		int count = 1;
 		int max = 1;
@@ -34,7 +27,7 @@ public class RestaurantCustomers2 {
 			i++;
 			count++;
 
-			while (list2.get(j) < list.get(i)) {
+			while (arr2[j] < arr1[i]) {
 				j++;
 				count--;
 			}
@@ -42,8 +35,9 @@ public class RestaurantCustomers2 {
 				max = count;
 			}
 		}
-		out.write(String.valueOf(max));
-		out.flush();
+		
+		sb.append(max);
+		System.out.print(sb);
 
 	}
 
