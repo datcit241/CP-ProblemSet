@@ -1,7 +1,5 @@
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.InputMismatchException;
+import java.io.*;
+import java.util.*;
 
 public class StaticRangeSumQueries {
 
@@ -12,7 +10,6 @@ public class StaticRangeSumQueries {
 
 		long[] arr = new long[n + 1];
 
-		arr[0] = 0;
 		for (int i = 1; i <= n; i++) {
 			arr[i] = arr[i - 1] + ni();
 		}
@@ -20,9 +17,9 @@ public class StaticRangeSumQueries {
 		for (int i = 0; i < q; i++) {
 			int a = ni() - 1;
 			int b = ni();
-			sb.append(arr[b] - arr[a] + "\n");
+			sb.append(arr[b] - arr[a]).append("\n");
 		}
-		System.out.println(sb);
+		System.out.print(sb);
 
 	}
 
