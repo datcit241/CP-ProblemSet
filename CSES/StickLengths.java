@@ -1,29 +1,25 @@
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.InputMismatchException;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class StickLengths {
 
 	public static void main(String[] args) {
+		StringBuilder sb = new StringBuilder();
 		int n = ni();
-		long minimumCost = 0;
-		List<Integer> list = new ArrayList<>();
+		long minimumCost = 0l;
+		int[] arr = new int[n];
 
 		for (int i = 0; i < n; i++) {
-			list.add(ni());
+			arr[i] = ni();
 		}
-		Collections.sort(list);
-		int median = list.get(n / 2);
+		Arrays.sort(arr);
+		int median = arr[n / 2];
 
 		for (int i = 0; i < n; i++) {
-			minimumCost += Math.abs(list.get(i) - median);
+			minimumCost += Math.abs(arr[i] - median);
 		}
-		System.out.println(minimumCost);
-
+		sb.append(minimumCost);
+		System.out.print(sb);
 	}
 
 	static InputStream is = System.in;
