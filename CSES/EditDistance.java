@@ -9,10 +9,10 @@ public class EditDistance {
 	}
 	
 	static void solution1() {
-		String s1 = ns();
-		String s2 = ns();
+		char[] s1 = ns().toCharArray();
+		char[] s2 = ns().toCharArray();
  
-		int n = s1.length(), m = s2.length();
+		int n = s1.length, m = s2.length;
  
 		int[][] edits = new int[n + 1][m + 1];
  
@@ -27,7 +27,7 @@ public class EditDistance {
 		for (int i = 1; i <= n; i++) {
 			for (int j = 1; j <= m; j++) {
 				
-				if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+				if (s1[i - 1] == s2[j - 1]) {
 					edits[i][j] = edits[i - 1][j - 1];
 					continue;
 				}
