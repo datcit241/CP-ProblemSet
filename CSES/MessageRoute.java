@@ -1,130 +1,104 @@
+// submission: https://cses.fi/problemset/hack/1667/entry/2576740/
+
 import java.io.*;
 import java.util.*;
 
 public class MessageRoute {
-	static int n, m;
-	static int[] prev;
-	static Vertex[] vertices;
-	
+
 	public static void main(String[] args) {
-		StringBuilder sb = new StringBuilder();
-		n = ni(); m = ni();
-
-		vertices = new Vertex[n + 1];
-		prev = new int[n + 1];
-
+		int n = ni(), m = ni();
+		
+		Vertex[] vertices = new Vertex[n + 1];
+		
 		for (int i = 1; i <= n; i++) {
 			vertices[i] = new Vertex(i);
 		}
-
+		
 		for (int i = 0; i < m; i++) {
 			int u = ni(), v = ni();
-
-			vertices[u].addVertex(vertices[v]);
-			vertices[v].addVertex(vertices[u]);
+			
+			vertices[u].add(vertices[v]);
+			vertices[v].add(vertices[u]);
 		}
-
-//		bfs(vertices[1], vertices[n], prev);
-		bfs2(vertices[1]);
 		
-
-		if (vertices[n].visited) {
-			int count = 0;
-			int id = n;
- 
-			while (id != 0) {
-				count++;
-				id = prev[id];
+		StringBuilder sb = new StringBuilder();
+		
+		if (bfs(vertices[1], vertices[n])) {
+			Stack<Integer> stack = new Stack<>();
+			Vertex v = vertices[n];
+			
+			while (v != null) {
+				stack.push(v.id);
+				v = v.parent;
 			}
- 
-			sb.append(count).append("\n");
- 
-			int[] arr = new int[count];
- 
-			count = 0;
-			id = n;
- 
-			while (id != 0) {
-				arr[count] = id;
-				count++;
-				id = prev[id];
+			sb.append(stack.size()).append('\n');
+			
+			while (stack.size() != 0) {
+				sb.append(stack.pop()).append(' ');
 			}
- 
-			for (int i = count - 1; i >= 0; i--) {
-				sb.append(arr[i]).append(" ");
-			}
-
 		} else {
 			sb.append("IMPOSSIBLE");
 		}
 		System.out.print(sb);
 
 	}
-
-	static void bfs2(Vertex v) {
+	
+	static boolean bfs(Vertex v, Vertex target) {
+		v.visited = true;
 		Queue<Vertex> queue = new ArrayDeque<>();
-		queue.offer(v);
-
+		
+		while (v.adjacents.size() != 0) {
+			Vertex next = v.adjacents.poll();
+			
+			if (!next.visited) {
+				queue.offer(next);
+				next.visited = true;
+				next.parent = v;
+				
+				if (next.equals(target)) {
+					return true;
+				}
+			}
+		}
+		
 		while (queue.size() != 0) {
 			v = queue.poll();
-			v.visited = true;
 			
-			if (v.equals(vertices[n])) {
-				return;
-			}
-
-			for (Vertex next : v.adjacentComputers) {
-				if (!queue.contains(next) && !next.visited) {
-					queue.offer(next);
-					prev[next.id] = v.id;
-				}
+			while (v.adjacents.size() != 0) {
+				Vertex next = v.adjacents.poll();
 				
+				if (!next.visited) {
+					queue.offer(next);
+					next.visited = true;
+					next.parent = v;
+					
+					if (next.equals(target)) {
+						return true;
+					}
+				}
 			}
-
+			
 		}
+		return false;
+		
 	}
-
-//	static Queue<Vertex> queue = new ArrayDeque<>();
-//
-//	static void bfs(Vertex v, Vertex destinationVertex, int[] prev) {
-//		v.visited = true;
-//
-//		if (v.equals(destinationVertex)) {
-//			return;
-//		}
-//
-//		for (Vertex vertex : v.adjacentComputers) {
-//			if (!vertex.visited && !queue.contains(vertex)) {
-//				prev[vertex.id] = v.id;
-//
-//				queue.offer(vertex);
-//			}
-//		}
-//
-//		if (queue.size() == 0) {
-//			return;
-//		}
-//		bfs(queue.poll(), destinationVertex, prev);
-//	}
-
+	
 	static class Vertex {
 		int id;
-		boolean visited;
-		List<Vertex> adjacentComputers;
-		int totalDistance;
-
+		boolean visited = false;
+		Queue<Vertex> adjacents = new ArrayDeque<>();
+		Vertex parent;
+		
 		public Vertex(int id) {
 			this.id = id;
-			visited = false;
-			adjacentComputers = new ArrayList<>();
 		}
-
-		public void addVertex(Vertex v) {
-			adjacentComputers.add(v);
+		
+		public void add(Vertex v) {
+			adjacents.add(v);
 		}
-
+		
 	}
-
+	
 	static InputStream is = System.in;
 	static byte[] inbuf = new byte[1 << 24];
 	static int lenbuf = 0, ptrbuf = 0;
@@ -148,6 +122,10 @@ public class MessageRoute {
 	static boolean isSpaceChar(int c) {
 		return !(c >= 33 && c <= 126);
 	}
+	
+	static boolean isSpaceChar2(int c) {
+		return !(c >= 32 && c <= 126);
+	}
 
 	static int skip() {
 		int b;
@@ -168,6 +146,16 @@ public class MessageRoute {
 		int b = skip();
 		StringBuilder sb = new StringBuilder();
 		while (!(isSpaceChar(b))) {
+			sb.appendCodePoint(b);
+			b = readByte();
+		}
+		return sb.toString();
+	}
+	
+	static String nextLine() {
+		int b = skip();
+		StringBuilder sb = new StringBuilder();
+		while (!(isSpaceChar2(b))) {
 			sb.appendCodePoint(b);
 			b = readByte();
 		}
