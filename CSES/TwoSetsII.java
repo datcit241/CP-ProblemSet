@@ -25,7 +25,9 @@ public class TwoSetsII {
 			
 			for (int j = halfSum; j >= i + 1; j--) {
 				arr3[j] += arr3[j - i];
-				arr3[j] %= 1000000007d;
+				if (Double.compare(arr3[j], 1000000007d) > 0) {
+					arr3[j] -= 1000000007d;
+				}
 			}
 			arr3[i] += 0.5d;
 			
