@@ -1,92 +1,93 @@
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
-import java.util.InputMismatchException;
+import java.io.*;
+import java.util.*;
 
-public class CreatingStrings2 {
-	static int n;
+public class CreatingStrings {
+	static StringBuilder sb = new StringBuilder();
 
-	public static void main(String[] args) throws IOException {
-		StringBuilder sb = new StringBuilder();
-		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
+	public static void main(String[] args) {
+		char[] charArray = ns().toCharArray();
+		
+		if (charArray.length == 1) {
+			System.out.println("1");
+			System.out.print(charArray[0]);
+			return;
+		}
+		
+		Arrays.sort(charArray);
+		
+		char[] initialArray = charArray.clone();
+		
 		int count = 1;
-
-		String s = ns();
-		n = s.length();
-		if (n == 1) {
-			sb.append(s);
-		} else {
-			char[] currentArray = s.toCharArray();
-			Arrays.sort(currentArray);
-			String initialString = arrayToString(currentArray);
-
-			String currentString = initialString;
-
-			while (true) {
-				sb.append(currentString + "\n");
-				currentArray = nextPermutation(currentArray);
-				currentString = arrayToString(currentArray);
-
-				if (currentString.equals(initialString)) {
-					break;
-				}
-				count++;
-
+		
+		while (true) {
+			append(charArray);
+			
+			nextPermutation(charArray);
+			
+			if (equals(charArray, initialArray)) {
+				break;
 			}
+			
+			count++;
 		}
-
-		out.write(String.valueOf(count) + "\n" + sb.toString());
-		out.flush();
-
+		
+		System.out.println(count);
+		System.out.print(sb);
+		
 	}
-
-	static String arrayToString(char[] array) {
-		String s = "";
-		for (char ch : array) {
-			s += ch;
-		}
-		return s;
-	}
-
-	static char[] nextPermutation(char[] currentArray) {
+	
+	static void nextPermutation(char[] charArray) {
 		int mark = -1;
-		char ch = ' ';
-		for (int i = n - 2; i >= 0; i--) {
-			if (currentArray[i] < currentArray[i + 1]) {
+		
+		for (int i = charArray.length - 2; i >=0; i--) {
+			if (charArray[i] < charArray[i + 1]) {
 				mark = i;
-				ch = currentArray[i];
 				break;
 			}
 		}
-
+		
 		if (mark != -1) {
-			// swap
-			for (int i = n - 1; i >= 0; i--) {
-				if (currentArray[i] > ch) {
-					char temp = currentArray[i];
-					currentArray[i] = ch;
-					currentArray[mark] = temp;
+			for (int i = charArray.length - 1; i >= mark; i--)	{
+				if (charArray[i] > charArray[mark]) {
+					char temp = charArray[i];
+					charArray[i] = charArray[mark];
+					charArray[mark] = temp;
 					break;
 				}
 			}
 		}
-
-		// reverse
-		int i = mark + 1;
-		int j = n - 1;
-		while (i < j) {
-			char temp = currentArray[i];
-			currentArray[i] = currentArray[j];
-			currentArray[j] = temp;
-			i++;
-			j--;
+		
+		int left = mark + 1;
+		int right = charArray.length - 1;
+		
+		while (left < right) {
+			char temp = charArray[left];
+			charArray[left] = charArray[right];
+			charArray[right] = temp;
+			
+			left++;
+			right--;
 		}
 
-		return currentArray;
 	}
-
+	
+	static void append(char[] arr) {
+		for (char ch: arr) {
+			sb.append(ch);
+		}
+		
+		sb.append('\n');
+	}
+	
+	static boolean equals (char[] arr1, char[] arr2) {
+		for (int i = 0; i < arr1.length; i++) {
+			if (arr1[i] != arr2[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	static InputStream is = System.in;
 	static byte[] inbuf = new byte[1 << 24];
 	static int lenbuf = 0, ptrbuf = 0;
@@ -110,6 +111,10 @@ public class CreatingStrings2 {
 	static boolean isSpaceChar(int c) {
 		return !(c >= 33 && c <= 126);
 	}
+	
+	static boolean isSpaceChar2(int c) {
+		return !(c >= 32 && c <= 126);
+	}
 
 	static int skip() {
 		int b;
@@ -130,6 +135,16 @@ public class CreatingStrings2 {
 		int b = skip();
 		StringBuilder sb = new StringBuilder();
 		while (!(isSpaceChar(b))) {
+			sb.appendCodePoint(b);
+			b = readByte();
+		}
+		return sb.toString();
+	}
+	
+	static String nextLine() {
+		int b = skip();
+		StringBuilder sb = new StringBuilder();
+		while (!(isSpaceChar2(b))) {
 			sb.appendCodePoint(b);
 			b = readByte();
 		}
