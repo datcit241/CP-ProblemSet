@@ -6,9 +6,9 @@ public class SubarraySumsI {
 	public static void main(String[] args) {
 		int n = ni(), x = ni();
 		
-		Set<Integer> set = new HashSet<>();
-		set.add(0);
-		int sum = 0;
+		Set<Long> set = new HashSet<>();
+		set.add(0L);
+		long sum = 0;
 		int count = 0;
 		
 		for (int i = 0; i < n; i++) {
